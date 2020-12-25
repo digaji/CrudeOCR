@@ -120,9 +120,9 @@ class Model:
         print(f"Summary for model: {self.__name}")
         return self.model.summary()
 
-    def evaluate(self, testImages, batchSize):
+    def evaluate(self, testImages, testLabels, batchSize):
         print(f"Evaluating {self.__name}!")
-        return self.model.evaluate(testImages, batch_size=batchSize)
+        return self.model.evaluate(testImages, testLabels, batch_size=batchSize)
 
     def predict(self, image):
         predictions = []
@@ -143,9 +143,9 @@ class Model:
 # CrudeV8 = Model("CrudeV8")
 # CrudeV8.load()
 
-# CrudeV6.evaluate(imagesTest)
-# CrudeV7.evaluate(imagesTest)
-# CrudeV8.evaluate(imagesTest)
+# CrudeV6.evaluate(imagesTest, labelsTest, 256)
+# CrudeV7.evaluate(imagesTest, labelsTest, 256)
+# CrudeV8.evaluate(imagesTest, labelsTest, 256)
 
 # test = imagesTest[10096:10098]
 # print(test.shape)
