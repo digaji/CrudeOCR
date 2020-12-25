@@ -120,6 +120,10 @@ class Model:
         print(f"Summary for model: {self.__name}")
         return self.model.summary()
 
+    def evaluate(self, testImages, batchSize):
+        print(f"Evaluating {self.__name}!")
+        return self.model.evaluate(testImages, batch_size=batchSize)
+
     def predict(self, image):
         predictions = []
         prediction = self.model.predict(image)
@@ -128,7 +132,7 @@ class Model:
         return predictions
 
 
-# # * Testing Area (uncomment to test models)
+# # * Testing Area (uncomment to test models) (uncomment import data from Pickle first)
 # import matplotlib.pyplot as plt
 # CrudeV6 = Model("CrudeV6")
 # CrudeV6.load()
@@ -138,6 +142,10 @@ class Model:
 
 # CrudeV8 = Model("CrudeV8")
 # CrudeV8.load()
+
+# CrudeV6.evaluate(imagesTest)
+# CrudeV7.evaluate(imagesTest)
+# CrudeV8.evaluate(imagesTest)
 
 # test = imagesTest[10096:10098]
 # print(test.shape)
