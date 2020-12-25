@@ -57,8 +57,6 @@ imagesTest /= 255
 imagesTrain = imagesTrain.reshape(-1, IMG_WIDTH, IMG_HEIGHT, 1)  # -1 batch size to include everything
 imagesTest = imagesTest.reshape(-1, IMG_WIDTH, IMG_HEIGHT, 1)
 
-imagesShape = imagesTrain.shape[1:]
-
 # Converts to one-hot encoding
 labelsTrain = keras.utils.to_categorical(raw_labelsTrain)
 labelsTest = keras.utils.to_categorical(raw_labelsTest)

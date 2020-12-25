@@ -130,3 +130,9 @@ dmypy.json
 
 # VS Code
 .vscode
+
+# Pickle files
+data/imagesTest.pickle
+data/imagesTrain.pickle
+data/labelsTest.pickle
+data/labelsTrain.pickle
