@@ -1,16 +1,19 @@
 import tkinter as tk
 from tkinter import filedialog
 from PIL import ImageTk, Image
+from widgets import *
 
-## TODO: Implement command after confirm button clicked
-## TODO: Implement analyzing window
+# TODO: Implement command after confirm button clicked
+# TODO: Implement analyzing window
+# TODO: Replace widgets with the ones from widget.py
 
 # Starting Resolution
 HEIGHT = 800
 WIDTH = 1280
 
 def mainWindow(frame):
-    main = tk.Canvas(frame, height=HEIGHT, width=WIDTH, bg="white").pack()
+    main = tk.Canvas(frame, height=HEIGHT, width=WIDTH, bg="white")
+    main.pack()
 
     # Title
     title = tk.Label(main, text="Crude OCR", font="Helvetica 100", bg="white")
@@ -23,7 +26,7 @@ def mainWindow(frame):
     buttonFile = tk.Button(main, text="Open File", bg="#ff7272", command=lambda: fileWindow(frame))
     buttonFile.place(relx=0.7, rely=0.7, anchor="center", relwidth=0.15, relheight=0.05)
 
-    buttonTest = tk.Button(main, text="Test the AI!")
+    buttonTest = tk.Button(main, text="Test the AI!", command=main)
     buttonTest.place(relx=0.5, rely=0.8, anchor="center", relwidth=0.15, relheight=0.05)
 
 def webcamWindow(frame):
@@ -41,15 +44,20 @@ def webcamWindow(frame):
 def fileWindow(frame):
     global theImage
 
+    fileFrame = tk.Toplevel(frame, height=HEIGHT, width=WIDTH, bg="white")
+    fileFrame.title("File")
+
+    # Opens and converts image to tKinter readable format
     filename = filedialog.askopenfilename(title="Select A File", filetypes=(("png files", ".png"), ("jpg files", ".jpg .jpeg")))
     theImage = ImageTk.PhotoImage(Image.open(filename))
 
-    fileFrame = tk.Toplevel(frame, height=HEIGHT, width=WIDTH, bg="white")
+    # Checks if loaded image is greater than designated size or not
     if theImage.width() < 800 and theImage.height() < 600:
         showImage = tk.Label(fileFrame, image=theImage).place(relx=0.5, rely=0.3, anchor="center")
     else:
         theImage = ImageTk.PhotoImage(Image.open(filename).resize((600, 600), Image.ANTIALIAS))
         showImage = tk.Label(fileFrame, image=theImage).place(relx=0.5, rely=0.4, anchor="center")
 
+    # Buttons
     confirmButton = tk.Button(fileFrame, text="Confirm?", command=fileFrame.destroy)
     confirmButton.place(relx=0.5, rely=0.85, anchor="center", relwidth=0.15, relheight=0.05)
