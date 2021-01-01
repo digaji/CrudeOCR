@@ -12,6 +12,7 @@ def convertToGrayscale(img: image):
     """
     img = cv.cvtColor(img, cv.COLOR_BAYER_BG2BGR)
 
+
 def rotateClockwise(img: image):
     """
     Returns image that's rotated clockwise
@@ -22,6 +23,7 @@ def rotateClockwise(img: image):
     dimensions = (width, height)
 
     img = cv.warpAffine(img, rotationMatrix, dimensions)
+
 
 def rotateCounterClockwise(img: image):
     """
@@ -34,8 +36,18 @@ def rotateCounterClockwise(img: image):
 
     img = cv.warpAffine(img, rotationMatrix, dimensions)
 
+
 def flip(img: image):
     """
     Returns image that's horizontally flipped
     """
     img = cv.flip(img, flipCode=1)  # flipCode of 1 returns horizontally flipped image
+
+
+# Image Functions
+def convertSingleToPredict(image):
+    """
+    Converts a single image to model readable format (ndarray (1, 28, 28, 1))
+    """
+    image = image.reshape(1, 28, 28, 1) 
+    return image
