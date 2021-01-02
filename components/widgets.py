@@ -1,32 +1,32 @@
 import tkinter as tk
 from tkinter import ttk
-from components import commands, windows
+from components import frames, commands
 
-def title(window, x, y):
-    tk.Label(window, text="Crude OCR", font="Helvetica 100", bg="white").place(relx=x, rely=y, anchor="center")
+def title(frame, x, y):
+    tk.Label(frame, text="Crude OCR", font="Helvetica 100", bg="white").place(relx=x, rely=y, anchor="center")
 
-def webcamButton(window, root, x, y, width, height):
-    tk.Button(window, text="Start Webcam", bg="#a8cbff", command=lambda: windows.webcamWindow(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+def webcamButton(frame, root, x, y, width, height):
+    tk.Button(frame, text="Start Webcam", bg="#a8cbff", command=lambda: frames.webcamFrame(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
 
-def fileButton(window, root, x, y, width, height):
-    tk.Button(window, text="Open File", bg="#ff7272", command=lambda: windows.fileWindow(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+def fileButton(frame, root, x, y, width, height):
+    tk.Button(frame, text="Open File", bg="#ff7272", command=lambda: frames.fileFrame(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
 
-def testButton(window, root, x, y, width, height):
-    tk.Button(window, text="Test the AI!").place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+def testButton(frame, root, x, y, width, height):
+    tk.Button(frame, text="Test the AI!").place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
 
-def backButton(window, root, x, y, width, height):
-    tk.Button(window, text="Back", bg="#ff7272", command=lambda: windows.mainWindow(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+def backButton(frame, root, x, y, width, height):
+    tk.Button(frame, text="Back", bg="#ff7272", command=lambda: frames.mainFrame(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
 
-def confirmButton(window, root, x, y, width, height):
-    tk.Button(window, text="Confirm?", command=lambda: windows.mainWindow(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+def confirmButton(frame, root, x, y, width, height):
+    tk.Button(frame, text="Confirm?", command=lambda: frames.mainFrame(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
 
-def webcamFrame(window, x, y, width, height):
+def webcamFrame(frame, x, y, width, height):
     pass
 
-def textField(window, x, y, width, height):
+def textField(frame, x, y, width, height):
     pass
 
-def scrollText(window):
+def scrollText(frame):
     pass
 
 # TODO: Implement commands from commands.py

@@ -1,7 +1,7 @@
 import tkinter as tk
 import cv2 as cv
 import numpy as np
-from components import windows, image
+from components import frames, image
 
 # TODO: Add commands for the rest
 

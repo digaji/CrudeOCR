@@ -1,5 +1,5 @@
 import tkinter as tk
-from components import windows
+from components import frames
 
 
 def main():
@@ -9,7 +9,7 @@ def main():
     root.geometry("1280x800")
     root.config(bg="white")
 
-    windows.initialize(root)
+    frames.initialize(root)
 
     # Starts the window
     root.mainloop()
