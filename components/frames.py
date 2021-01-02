@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import filedialog
 from PIL import ImageTk, Image
-from components import widgets
+import cv2
+from components import widgets, commands
 
 # TODO: Implement command after confirm button clicked
 # TODO: Implement analyzing window
@@ -43,9 +44,6 @@ def webcamFrame(root):
     global frame
     checkFrame()
 
-    # Title
-    widgets.title(frame, 0.5, 0.1)
-
     # Buttons
     widgets.backButton(frame, root, 0.85, 0.9, 0.15, 0.05)
 
@@ -65,13 +63,27 @@ def fileFrame(root):
         theImage = ImageTk.PhotoImage(Image.open(filename))
 
         # Checks if loaded image is greater than designated size or not
-        if theImage.width() < WIDTH // 2 and theImage.height() < HEIGHT // 2:
-            showImage = tk.Label(frame, image=theImage).place(relx=0.5, rely=0.3, anchor="center")
+        if theImage.width() < frame.winfo_width() // 2 and frame.winfo_height() < HEIGHT // 2:
+            tk.Label(frame, image=theImage).place(relx=0.5, rely=0.3, anchor="center")
         else:
             theImage = ImageTk.PhotoImage(Image.open(filename).resize((600, 600), Image.ANTIALIAS))
-            showImage = tk.Label(frame, image=theImage).place(relx=0.5, rely=0.4, anchor="center")
+            tk.Label(frame, image=theImage).place(relx=0.5, rely=0.4, anchor="center")
 
         # Buttons
         widgets.confirmButton(frame, root, 0.5, 0.85, 0.15, 0.05)
     except:
         mainFrame(root)
+
+
+def testFrame(root):
+    global frame
+    checkFrame()
+
+    canvas = widgets.TestAI(frame, width=500, height=500, background="black", highlightthickness=10, highlightbackground="gray")
+    canvas.place(relx=0.5, rely=0.5, anchor="center")
+
+    # Label
+    tk.Label(frame, text="Draw Here!", font="Helvetica 70", bg="white").place(relx=0.5, rely=0.1, anchor="center")
+
+    # Buttons
+    widgets.backButton(frame, root, 0.85, 0.9, 0.15, 0.05)

@@ -1,12 +1,16 @@
 import tkinter as tk
 from components import frames
 
+# Starting Resolution
+HEIGHT = 800
+WIDTH = 1280
+
 
 def main():
     # Initialize main window
     root = tk.Tk()
     root.title("Crude OCR")
-    root.geometry("1280x800")
+    root.geometry(f"{WIDTH}x{HEIGHT}")
     root.config(bg="white")
 
     frames.initialize(root)
