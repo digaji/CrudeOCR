@@ -26,7 +26,7 @@ class Model:
     LABELS_LENGTH = len(labelsReal)
     def __init__(self, name):
         self.__name = name
-        print(f"Model {name} created!")
+        print(f"Model = {name}")
         self.__callbacks = [
             tf.keras.callbacks.EarlyStopping(monitor="val_accuracy", verbose=1, patience=30, mode="max"),
             tf.keras.callbacks.TensorBoard(log_dir=f"models/logs/{self.__name} TB Logs"),
@@ -88,11 +88,11 @@ class Model:
 
     def save(self):
         self.model.save(f"models/{self.__name}.h5")
-        print(f"Model {self.__name} saved!\n")
+        print(f"Model {self.__name} saved!")
 
     def load(self):
         self.model = keras.models.load_model(f"models/{self.__name}.h5")
-        print(f"Model {self.__name} loaded!\n")
+        print(f"Model {self.__name} loaded!")
         return self.model
 
     def train(self, epochs: int, batchSize: int, trainImages, trainLabels, testImages, testLabels):
@@ -127,9 +127,16 @@ class Model:
     def predict(self, image):
         predictions = []
         prediction = self.model.predict(image)
-        for i in range(len(prediction)):
-            predictions.append(self.labelsReal[np.argmax(prediction[i])])
-        return predictions
+        try:
+            if prediction.shape[0] > 1:
+                for i in range(len(prediction)):
+                    predictions.append(self.labelsReal[np.argmax(prediction[i])])
+                return predictions
+            else:
+                return self.labelsReal[np.argmax(prediction[0])]
+        except:
+            print(f"{self.__name} ERROR IN PROCESSING CHARACTERS! TRY AGAIN!")
+            return "ERROR IN PROCESSING CHARACTERS! TRY AGAIN!"
 
 
 # # * Testing Area (uncomment to test models) (uncomment import data from Pickle first)
@@ -171,3 +178,4 @@ class Model:
 #     testLabels=labelsTest)
 # CrudeCommunity.save()
 # CrudeCommunity.info
+# CrudeCommunity.evaluate(imagesTest, labelsTest, 256)
