@@ -20,6 +20,12 @@ def backButton(frame, root, x, y, width, height):
 def confirmButton(frame, root, x, y, width, height):
     tk.Button(frame, text="Confirm?", command=lambda: frames.mainFrame(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
 
+def addButton(frame, root, x, y, width, height):
+    tk.Button(frame, text="Add More Images", bg="#a8cbff", command=lambda: frames.fileFrame(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+
+def delButton(frame, root, x, y, width, height):
+    tk.Button(frame, text="Delete Last Image", bg="#ff7272", command=lambda: commands.deleteLastImage(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+
 def webcamFrame(frame, x, y, width, height):
     pass
 

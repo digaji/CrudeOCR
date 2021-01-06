@@ -1,53 +1,42 @@
 import tkinter as tk
+from tkinter import filedialog, messagebox
 import cv2 as cv
 import numpy as np
+from PIL import ImageTk, Image
 from components import frames, image
 
 # TODO: Add commands for the rest
 
-# Image Adjustments
-def convertToGrayscale(img: image):
-    """
-    Returns image that's grayscaled
-    """
-    img = cv.cvtColor(img, cv.COLOR_BAYER_BG2BGR)
-
-
-def rotateClockwise(img: image):
-    """
-    Returns image that's rotated clockwise
-    """
-    (height, width) = img.shape[:2]
-    rotationPoint = (width // 2, height // 2)
-    rotationMatrix = cv.getRotationMatrix2D(rotationPoint, angle=(-90 + img.rotation), scale=1.0)  # Needed for warpAffine function
-    dimensions = (width, height)
-
-    img = cv.warpAffine(img, rotationMatrix, dimensions)
-
-
-def rotateCounterClockwise(img: image):
-    """
-    Returns image that's rotated counterclockwise
-    """
-    (height, width) = img.shape[:2]
-    rotationPoint = (width // 2, height // 2)
-    rotationMatrix = cv.getRotationMatrix2D(rotationPoint, angle=(90 + img.rotation), scale=1.0)  # Needed for warpAffine function
-    dimensions = (width, height)
-
-    img = cv.warpAffine(img, rotationMatrix, dimensions)
-
-
-def flip(img: image):
-    """
-    Returns image that's horizontally flipped
-    """
-    img = cv.flip(img, flipCode=1)  # flipCode of 1 returns horizontally flipped image
-
-
-# Image Functions
+# * Image Functions
 def convertSingleToPredict(image):
     """
     Converts a single image to model readable format (ndarray (1, 28, 28, 1))
     """
     image = image.reshape(1, 28, 28, 1) 
     return image
+
+
+def rescaleDimensions(image):
+    """
+    Returns rescaled image that's below max width and height (aspect ratio kept)
+    """
+    MAX_HEIGHT = 600
+    MAX_WIDTH = 800
+    
+    factor = MAX_HEIGHT / float(image.shape[0])
+    if MAX_WIDTH / float(image.shape[1]) < factor:
+        factor = MAX_WIDTH / float(image.shape[1])
+
+    return cv.resize(image, None, fx=factor, fy=factor, interpolation=cv.INTER_AREA)
+
+
+# * Misc. Functions
+def deleteLastImage(root):
+    """
+    Removes last image in imageList (if empty, returns to mainFrame)
+    """
+    if len(frames.imageList) > 1:
+        frames.imageList.pop()
+        messagebox.showinfo("Deleted", "Previous image deleted!")
+    else:
+        frames.mainFrame(root)
