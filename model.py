@@ -10,10 +10,6 @@ from time import time, ctime
 # physical_devices = tf.config.list_physical_devices("GPU")
 # tf.config.experimental.set_memory_growth(physical_devices[0], enable=True)
 
-IMG_HEIGHT = 28
-IMG_WIDTH = 28
-shape = IMG_WIDTH * IMG_HEIGHT
-
 # # * Import data from Pickle format (ONLY FOR TRAINING AND TESTING)
 # import pickle
 # imagesTrain = pickle.load(open("data/imagesTrain.pickle", "rb"))
@@ -21,9 +17,11 @@ shape = IMG_WIDTH * IMG_HEIGHT
 # imagesTest = pickle.load(open("data/imagesTest.pickle", "rb"))
 # labelsTest = pickle.load(open("data/labelsTest.pickle", "rb"))
 
+
 class Model:
     labelsReal = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    LABELS_LENGTH = len(labelsReal)
+    imageShape = (28, 28, 1)
+    labelsLength = len(labelsReal)
     def __init__(self, name):
         self.__name = name
         print(f"Model = {name}")
@@ -41,7 +39,7 @@ class Model:
             Conv2D(
                 32,
                 kernel_size=(3, 3),
-                input_shape=(28, 28, 1),
+                input_shape=self.imageShape,
                 activation="relu",
             )
         )
@@ -53,7 +51,7 @@ class Model:
             )
         )
         self.model.add(MaxPooling2D(pool_size=(2, 2)))
-        self.model.add(Dropout(0.2))  # Reducing chances of overfitting
+        self.model.add(Dropout(0.2))
         # 2 stacked Convolutional layers
         self.model.add(
             Conv2D(
@@ -70,7 +68,7 @@ class Model:
             )
         )
         self.model.add(MaxPooling2D(pool_size=(2, 2)))
-        self.model.add(Dropout(0.5))  # Reducing chances of overfitting
+        self.model.add(Dropout(0.5))
         # Flatten results before going to Dense layer
         self.model.add(Flatten())
         # 3 hidden layers
@@ -78,7 +76,7 @@ class Model:
         self.model.add(Dense(128, activation="relu"))
         self.model.add(Dense(64, activation="relu"))
         # Final output layer
-        self.model.add(Dense(self.LABELS_LENGTH, activation="softmax"))
+        self.model.add(Dense(self.labelsLength, activation="softmax"))
 
         # Compile the model
         self.model.compile(
