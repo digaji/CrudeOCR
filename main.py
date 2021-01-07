@@ -1,9 +1,9 @@
 import tkinter as tk
 from components import frames
 
-# Starting Resolution
-HEIGHT = 800
+# * -- Starting Resolution -- * #
 WIDTH = 1280
+HEIGHT = 800
 
 
 def main():

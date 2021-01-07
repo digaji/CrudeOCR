@@ -4,17 +4,17 @@ from PIL import ImageTk, Image
 import cv2 as cv
 from model import Model
 from components import widgets, commands
+from components.widgets import Camera, TestAI
 
 # TODO: Implement command after confirm button clicked
-# TODO: Implement analyzing window
+# TODO: Implement analyzingFrame
+# TODO: Implement resultFrame
 
-# Starting Resolution
-HEIGHT = 800
-WIDTH = 1280
-
-# Desired model
+# * -- Variables -- * #
 model = Model("CrudeV8")
+imageList = []
 
+# * -- Initialization Function -- * #
 def initialize(root):
     global frame
     frame = tk.Frame(root, bg="white")
@@ -23,17 +23,13 @@ def initialize(root):
     # Loads in prediction model
     model.load()
 
+    # Loads in mainFrame
     mainFrame(root)
 
 
-# Function for frame checking
-def checkFrame():
-    for widget in frame.winfo_children():
-        widget.destroy()
-
-
+# * -- Frames -- * #
 def mainFrame(root):
-    checkFrame()
+    commands.checkFrame()
     imageList.clear()
 
     # Title
@@ -46,16 +42,19 @@ def mainFrame(root):
 
 
 def webcamFrame(root):
-    checkFrame()
+    global webcam
+    commands.checkFrame()
+
+    # Webcam
+    webcam = Camera(root, relx=0.5, rely=0.4, camNumber=0, resolution=(640, 480))
 
     # Buttons
-    widgets.backButton(frame, root, x=0.5, y=0.9, width=0.15, height=0.05)
+    widgets.backWebcamButton(frame, root, x=0.5, y=0.9, width=0.15, height=0.05)
 
 
-imageList = []
 def fileFrame(root):
     global tkImage
-    checkFrame()
+    commands.checkFrame()
 
     # Opens and converts image to TkInter readable format
     try:
@@ -96,11 +95,11 @@ def fileFrame(root):
 
 
 def testFrame(root):
-    checkFrame()
+    global canvas
+    commands.checkFrame()
 
     # Image
-    canvas = widgets.TestAI(frame, width=500, height=500, background="black", highlightthickness=10, highlightbackground="gray")
-    canvas.place(relx=0.5, rely=0.5, anchor="center")
+    canvas = TestAI(frame, relx=0.5, rely=0.5, width=500, height=500, background="black", highlightthickness=10, highlightbackground="gray")
 
     # Label
     tk.Label(frame, text="Draw Here!", font="Helvetica 70", bg="white").place(relx=0.5, rely=0.1, anchor="center")

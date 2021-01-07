@@ -1,13 +1,10 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import messagebox
 import cv2 as cv
 import numpy as np
-from PIL import ImageTk, Image
 from components import frames, image
 
-# TODO: Add commands for the rest
-
-# * Image Functions
+# * -- Image Functions -- * #
 def convertSingleToPredict(image):
     """
     Converts a single image to model readable format (ndarray (1, 28, 28, 1))
@@ -30,9 +27,9 @@ def rescaleDimensions(image):
     return cv.resize(image, None, fx=factor, fy=factor, interpolation=cv.INTER_AREA)
 
 
-# * Misc. Functions
+# * -- Button Functions -- * #
 def deleteLastImage(root):
-    """
+    """ delButton function
     Removes last image in imageList (if empty, returns to mainFrame)
     """
     if len(frames.imageList) > 1:
@@ -40,3 +37,20 @@ def deleteLastImage(root):
         messagebox.showinfo("Deleted", "Previous image deleted!")
     else:
         frames.mainFrame(root)
+
+
+def backWebcam(root):
+    """ backWebcamButton function
+    Stops webcam frame and returns back to mainFrame
+    """
+    frames.webcam.stopCam()
+    frames.webcam.destroy()
+    frames.mainFrame(root)
+
+
+# * -- Misc. Functions -- * #
+def checkFrame():
+    """ Every Frame function
+    """
+    for widget in frames.frame.winfo_children():
+        widget.destroy()
