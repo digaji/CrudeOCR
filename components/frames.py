@@ -7,7 +7,6 @@ from components import widgets, commands
 from components.widgets import Camera, TestAI
 
 # TODO: Implement command after confirm button clicked
-# TODO: Implement analyzingFrame
 # TODO: Implement resultFrame
 
 # * -- Variables -- * #
@@ -32,8 +31,8 @@ def mainFrame(root):
     commands.checkFrame()
     imageList.clear()
 
-    # Title
-    widgets.title(frame, 0.5, 0.2)
+    # Label
+    tk.Label(frame, text="Crude OCR", font="Helvetica 100", bg="white").place(relx=0.5, rely=0.2, anchor="center")
 
     # Buttons
     widgets.webcamButton(frame, root, x=0.3, y=0.7, width=0.15, height=0.05)
@@ -66,20 +65,17 @@ def fileFrame(root):
         rawImage = cv.imread(filepath)
 
         # Converts from default OpenCV color space of BGR to RGB
-        rawImage = cv.cvtColor(rawImage, cv.COLOR_BGR2RGB)
+        tkImage = cv.cvtColor(rawImage, cv.COLOR_BGR2RGB)
 
-        # Checks if loaded image is greater than designated size or not
-        if rawImage.shape[1] < frame.winfo_width() // 2 and rawImage.shape[0] < frame.winfo_height():
-            pass
-        else:
-            rawImage = commands.rescaleDimensions(rawImage)
-
+        # Rescales image to just below half of frame dimensions while keeping aspect ratio
+        tkImage = commands.rescaleDimensions(tkImage, frame.winfo_width() // 2, frame.winfo_height() // 2)
+        
         # Converting from normal image array to TkInter readable format
-        tkImage = Image.fromarray(rawImage)
+        tkImage = Image.fromarray(tkImage)
         tkImage = ImageTk.PhotoImage(tkImage)
 
-        # Appends grayscaled image to list for predictions
-        imageList.append(rawImage)
+        # Appends original image filepath to list for predictions
+        imageList.append(filepath)
         
         # Image
         tk.Label(frame, image=tkImage, highlightthickness=10, highlightbackground="gray").place(relx=0.5, rely=0.4, anchor="center")
