@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import cv2 as cv
 import numpy as np
-from components import frames, image
+from components import frames
 
 # * -- Image Functions -- * #
 def convertSingleToPredict(image):
@@ -13,18 +13,15 @@ def convertSingleToPredict(image):
     return image
 
 
-def rescaleDimensions(image):
+def rescaleDimensions(image, maxWidth, maxHeight):
     """
     Returns rescaled image that's below max width and height (aspect ratio kept)
     """
-    MAX_HEIGHT = 600
-    MAX_WIDTH = 800
-    
-    factor = MAX_HEIGHT / float(image.shape[0])
-    if MAX_WIDTH / float(image.shape[1]) < factor:
-        factor = MAX_WIDTH / float(image.shape[1])
+    factor = maxHeight / float(image.shape[0])
+    if maxWidth / float(image.shape[1]) < factor:
+        factor = maxWidth / float(image.shape[1])
 
-    return cv.resize(image, None, fx=factor, fy=factor, interpolation=cv.INTER_AREA)
+    return cv.resize(image, None, fx=factor, fy=factor, interpolation=cv.INTER_LINEAR)
 
 
 # * -- Button Functions -- * #
