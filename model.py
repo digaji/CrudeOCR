@@ -151,17 +151,9 @@ class Model:
 
 # * -- Testing Area (uncomment to test models) (uncomment import data from Pickle first) -- * #
 # import matplotlib.pyplot as plt
-# CrudeV6 = Model("CrudeV6")
-# CrudeV6.load()
-
-# CrudeV7 = Model("CrudeV7")
-# CrudeV7.load()
-
 # CrudeV8 = Model("CrudeV8")
 # CrudeV8.load()
 
-# CrudeV6.evaluate(imagesTest, labelsTest, 256)
-# CrudeV7.evaluate(imagesTest, labelsTest, 256)
 # CrudeV8.evaluate(imagesTest, labelsTest, 256)
 
 # test = imagesTest[10096:10098]
@@ -172,8 +164,6 @@ class Model:
 # plt.imshow(test[1], cmap="gray")
 # plt.show()
 
-# print(CrudeV6.predict(test))
-# print(CrudeV7.predict(test))
 # print(CrudeV8.predict(test))
 
 # * -- To create your own model (uncomment import data from Pickle first) -- * #
