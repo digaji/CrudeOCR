@@ -6,11 +6,9 @@ from model import Model
 from components import widgets, commands
 from components.widgets import Camera, TestAI
 
-# TODO: Implement command after confirm button clicked
-# TODO: Implement resultFrame
-
 # * -- Variables -- * #
 model = Model("CrudeV8")
+fileList = []
 imageList = []
 
 # * -- Initialization Function -- * #
@@ -29,12 +27,13 @@ def initialize(root):
 # * -- Frames -- * #
 def mainFrame(root):
     commands.checkFrame()
+    fileList.clear()
     imageList.clear()
 
     # Label
     tk.Label(frame, text="Crude OCR", font="Helvetica 100", bg="white").place(relx=0.5, rely=0.2, anchor="center")
 
-    # Buttons
+    # Widgets
     widgets.webcamButton(frame, root, x=0.3, y=0.7, width=0.15, height=0.05)
     widgets.fileButton(frame, root, x=0.7, y=0.7, width=0.15, height=0.05)
     widgets.testButton(frame, root, x=0.5, y=0.8, width=0.15, height=0.05)
@@ -47,8 +46,11 @@ def webcamFrame(root):
     # Webcam
     webcam = Camera(root, relx=0.5, rely=0.4, camNumber=0, resolution=(640, 480))
 
-    # Buttons
+    # Widgets
+    widgets.confirmWebcamButton(frame, root, x=0.5, y=0.8, width=0.15, height=0.05)
     widgets.backWebcamButton(frame, root, x=0.5, y=0.9, width=0.15, height=0.05)
+    widgets.switchWebcamButton(frame, x=0.2, y=0.8, width=0.15, height=0.05)
+    widgets.textMenu(frame, x=0.5, y=0.05, width=0.15, height=0.05)
 
 
 def fileFrame(root):
@@ -75,15 +77,16 @@ def fileFrame(root):
         tkImage = ImageTk.PhotoImage(tkImage)
 
         # Appends original image filepath to list for predictions
-        imageList.append(filepath)
+        fileList.append(filepath)
         
         # Image
-        tk.Label(frame, image=tkImage, highlightthickness=10, highlightbackground="gray").place(relx=0.5, rely=0.4, anchor="center")
+        tk.Label(frame, image=tkImage, highlightthickness=5, highlightbackground="gray").place(relx=0.5, rely=0.4, anchor="center")
 
-        # Buttons
-        widgets.addButton(frame, root, x=0.85, y=0.85, width=0.15, height=0.05)
-        widgets.confirmButton(frame, root, x=0.5, y=0.85, width=0.15, height=0.05)
-        widgets.delButton(frame, root, x=0.15, y=0.85, width=0.15, height=0.05)
+        # Widgets
+        widgets.addFileButton(frame, root, x=0.85, y=0.85, width=0.15, height=0.05)
+        widgets.confirmFileButton(frame, root, x=0.5, y=0.85, width=0.15, height=0.05)
+        widgets.delFileButton(frame, root, x=0.15, y=0.85, width=0.15, height=0.05)
+        widgets.textMenu(frame, x=0.5, y=0.1, width=0.15, height=0.05)
         widgets.backButton(frame, root, x=0.5, y=0.95, width=0.15, height=0.05)
     except:
         # If user clicked cancel on file dialog
@@ -95,10 +98,31 @@ def testFrame(root):
     commands.checkFrame()
 
     # Image
-    canvas = TestAI(frame, relx=0.5, rely=0.5, width=500, height=500, background="black", highlightthickness=10, highlightbackground="gray")
+    canvas = TestAI(frame, relx=0.5, rely=0.5, width=500, height=500, background="white", highlightthickness=5, highlightbackground="gray")
 
     # Label
     tk.Label(frame, text="Draw Here!", font="Helvetica 70", bg="white").place(relx=0.5, rely=0.1, anchor="center")
 
-    # Buttons
+    # Widgets
+    widgets.confirmAIButton(frame, root, x=0.5, y=0.85, width=0.15, height=0.05)
     widgets.backButton(frame, root, x=0.85, y=0.9, width=0.15, height=0.05)
+
+
+def resultFrame(root):
+    commands.checkFrame()
+
+    # Label
+    tk.Label(frame, text="Result!", font="Helvetica 70", bg="white").place(relx=0.25, rely=0.1, anchor="center")
+
+    # Textbox
+    widgets.textBox(frame, x=0.5, y=0.5, width=65, height=15)
+
+    # Appends predicitions from images in imageList at the end of the textBox
+    for image in imageList:
+        prediction = image.getPrediction()
+        for i in prediction:
+            widgets.text.insert(tk.END, i)
+
+    # Widgets
+    widgets.backButton(frame, root, x=0.85, y=0.9, width=0.15, height=0.05)
+    widgets.speechButton(frame, widgets.text.get(1.0, tk.END), x=0.15, y=0.85, width=0.15, height=0.05)

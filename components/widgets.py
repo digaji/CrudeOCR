@@ -1,16 +1,10 @@
 import tkinter as tk
-from tkinter import ttk
 import cv2 as cv
 from PIL import Image, ImageTk
 import datetime as dt
 from components import frames, commands
 
-# * -- Widgets -- * #
-def title(frame, x, y):
-    tk.Label(frame, text="Crude OCR", font="Helvetica 100", 
-	bg="white").place(relx=x, rely=y, anchor="center")
-
-
+# * -- mainFrame -- * #
 def webcamButton(frame, root, x, y, width, height):
     tk.Button(frame, text="Start Webcam", bg="#a8cbff", 
 	command=lambda: frames.webcamFrame(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
@@ -26,72 +20,17 @@ def testButton(frame, root, x, y, width, height):
 	command=lambda: frames.testFrame(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
 
 
-def backButton(frame, root, x, y, width, height):
-    tk.Button(frame, text="Back", bg="#ff7272", 
-	command=lambda: frames.mainFrame(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
-
-
-def backWebcamButton(frame, root, x, y, width, height):
-    tk.Button(frame, text="Back", bg="#ff7272", 
-	command=lambda: commands.backWebcam(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
-
-
-def confirmButton(frame, root, x, y, width, height):
-    tk.Button(frame, text="Confirm?", bg="#f0f0f0", 
-	command=lambda: frames.mainFrame(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
-
-
-def addButton(frame, root, x, y, width, height):
-    tk.Button(frame, text="Add More Images", bg="#a8cbff", 
-	command=lambda: frames.fileFrame(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
-
-
-def delButton(frame, root, x, y, width, height):
-    tk.Button(frame, text="Delete Last Image", bg="#ff7272", 
-	command=lambda: commands.deleteLastImage(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
-
-
-def textField(frame, x, y, width, height):
-    pass
-
-
-def scrollbarText(frame):
-    pass
-
-
-class TestAI(tk.Canvas):
-    def __init__(self, parent, relx, rely, **kwargs):
-        super().__init__(parent, **kwargs)
-        self.relx = relx
-        self.rely = rely
-
-        # Mouse bindings for painting
-        self.bind("<Button-1>", self.lastPos)
-        self.bind("<B1-Motion>", self.addLine)
-
-        # Place the canvas in the desired location
-        self.place(relx=self.relx, rely=self.rely, anchor="center")
-
-    def lastPos(self, event):
-        # Remembers the last position of the mouse click
-        self.lastX, self.lastY = event.x, event.y
-
-    def addLine(self, event):
-        # Creates lines for painting
-        self.create_line(self.lastX, self.lastY, event.x, event.y, fill="white", width=5)
-        self.lastPos(event)
-
-
+# * -- webcamFrame -- * #
 class Camera(tk.Label):
 	def __init__(self, parent, relx, rely, camNumber=0, resolution=(640, 480), **kwargs):
 		super().__init__(parent, **kwargs)
 		self.width, self.height = resolution
-		self.parent = parent
 		self.relx = relx
 		self.rely = rely
+		self.camNumber = camNumber
 
 		# Start video capture
-		self.capture = cv.VideoCapture(camNumber) 
+		self.capture = cv.VideoCapture(camNumber)
 
 		# Set video capture to designated resolution
 		self.capture.set(cv.CAP_PROP_FRAME_WIDTH, self.width)
@@ -105,6 +44,8 @@ class Camera(tk.Label):
 		self.capture = cv.VideoCapture(camNumber)
 
 	def setResolution(self, resolution):
+		"""For future cases when higher resolution webcams are available
+		"""
 		self.width, self.height = resolution
 
 		self.capture.set(cv.CAP_PROP_FRAME_WIDTH, self.width)
@@ -130,5 +71,103 @@ class Camera(tk.Label):
 		self.capture.release()
 
 	def takePhoto(self):
-		cv.imwrite(f"images/{dt.datetime.now().strftime(r'%H-%M-%S_%d-%m-%Y')}.jpg", self.frame.copy())
+		"""Saves a screenshot of the webcam image and appends it to fileList
+		"""
+		self.photo = f"images/{dt.datetime.now().strftime(r'%H-%M-%S_%d-%m-%Y')}.jpg"
+		cv.imwrite(self.photo, self.frame.copy())
+		frames.fileList.append(self.photo)
 		print("Image saved")
+
+
+def confirmWebcamButton(frame, root, x, y, width, height):
+	tk.Button(frame, text="Confirm?", bg="#f0f0f0", 
+	command=lambda: commands.confirmWebcam(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+
+
+def switchWebcamButton(frame, x, y, width, height):
+	tk.Button(frame, text="Switch Webcam (if available)", bg="#a8cbff", 
+	command=commands.switchCamNumber).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+
+
+def backWebcamButton(frame, root, x, y, width, height):
+    tk.Button(frame, text="Back", bg="#ff7272", 
+	command=lambda: commands.backWebcam(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+
+
+# * -- fileFrame -- * #
+def confirmFileButton(frame, root, x, y, width, height):
+    tk.Button(frame, text="Confirm?", bg="#f0f0f0", 
+	command=lambda: commands.confirmFile(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+
+
+def addFileButton(frame, root, x, y, width, height):
+    tk.Button(frame, text="Add More Images", bg="#a8cbff", 
+	command=lambda: commands.addFile(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+
+
+def delFileButton(frame, root, x, y, width, height):
+    tk.Button(frame, text="Delete Last Image", bg="#ff7272", 
+	command=lambda: commands.deleteFile(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+
+
+# * -- testFrame -- * #
+class TestAI(tk.Canvas):
+    def __init__(self, parent, relx, rely, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.relx = relx
+        self.rely = rely
+
+        # Mouse bindings for painting
+        self.bind("<Button-1>", self.lastPos)
+        self.bind("<B1-Motion>", self.addLine)
+
+        # Place the canvas in the desired location
+        self.place(relx=self.relx, rely=self.rely, anchor="center")
+
+    def lastPos(self, event):
+        # Remembers the last position of the mouse click
+        self.lastX, self.lastY = event.x, event.y
+
+    def addLine(self, event):
+        # Creates lines for painting
+        self.create_line(self.lastX, self.lastY, event.x, event.y, fill="black", width=10)
+        self.lastPos(event)
+
+
+def confirmAIButton(frame, root, x, y, width, height):
+	tk.Button(frame, text="Confirm?", bg="#f0f0f0", 
+	command=lambda: commands.confirmAI(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+
+
+# * -- resultFrame -- * #
+def textBox(frame, x, y, width, height):
+	global text
+	text = tk.Text(frame, width=width, height=height, font="Helvetica 20", highlightthickness=5)
+	text.place(relx=x, rely=y, anchor="center")
+
+	scrollbar = tk.Scrollbar(frame)
+	scrollbar.place(relx=x + 0.4, rely=y - 0.25, anchor="center")
+
+	# Bind textBox scroll vertical scroll to scrollbar
+	text.config(yscrollcommand=scrollbar.set)
+	scrollbar.config(command=text.yview)
+
+
+def speechButton(frame, text, x, y, width, height):
+	tk.Button(frame, text="Speech", bg="#a8cbff", 
+	command=lambda: commands.speechResult(text)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+
+
+# * -- In multiple frames -- * #
+def backButton(frame, root, x, y, width, height):
+    tk.Button(frame, text="Back", bg="#ff7272", 
+	command=lambda: frames.mainFrame(root)).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
+
+
+def textMenu(frame, x, y, width, height):
+	global clicked
+	options = ["Single Word", "Multiple Words", "Multiple Lines"]
+
+	clicked = tk.StringVar()
+	clicked.set(options[0])
+	tk.OptionMenu(frame, clicked, *options).place(relx=x, rely=y, anchor="center", relwidth=width, relheight=height)
