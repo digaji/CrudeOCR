@@ -6,11 +6,11 @@ from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2
 import numpy as np
 from time import time, ctime
 
-# # * Configuration for CUDA-enabled GPUs (UNCOMMENT)
+# * -- Configuration for CUDA-enabled GPUs -- * #
 # physical_devices = tf.config.list_physical_devices("GPU")
 # tf.config.experimental.set_memory_growth(physical_devices[0], enable=True)
 
-# # * Import data from Pickle format (ONLY FOR TRAINING AND TESTING)
+# # * -- Import data from Pickle format (ONLY FOR TRAINING AND TESTING) -- * #
 # import pickle
 # imagesTrain = pickle.load(open("data/imagesTrain.pickle", "rb"))
 # labelsTrain = pickle.load(open("data/labelsTrain.pickle", "rb"))
@@ -85,15 +85,21 @@ class Model:
         print("Network created!")
 
     def save(self):
+        """Save current iteration of model
+        """
         self.model.save(f"models/{self.__name}.h5")
         print(f"Model {self.__name} saved!")
 
     def load(self):
+        """Load in selected model
+        """
         self.model = keras.models.load_model(f"models/{self.__name}.h5")
         print(f"Model {self.__name} loaded!")
         return self.model
 
     def train(self, epochs: int, batchSize: int, trainImages, trainLabels, testImages, testLabels):
+        """Train the model with training data and testing data
+        """
         startTime = time()
         print(f"Training for {self.__name} started at {ctime()}\n")
         try:
@@ -115,6 +121,8 @@ class Model:
 
     @property
     def info(self):
+        """Returns model summary and structure information
+        """
         print(f"Summary for model: {self.__name}")
         return self.model.summary()
 
@@ -123,6 +131,10 @@ class Model:
         return self.model.evaluate(testImages, testLabels, batch_size=batchSize)
 
     def predict(self, image):
+        """Returns prediction for a certain image
+        If image contains multiple characters, return a list. Else, return the predicted character.
+        If an error occurs, returns try again statement
+        """
         predictions = []
         prediction = self.model.predict(image)
         try:
@@ -137,7 +149,7 @@ class Model:
             return "ERROR IN PROCESSING CHARACTERS! TRY AGAIN!"
 
 
-# # * Testing Area (uncomment to test models) (uncomment import data from Pickle first)
+# * -- Testing Area (uncomment to test models) (uncomment import data from Pickle first) -- * #
 # import matplotlib.pyplot as plt
 # CrudeV6 = Model("CrudeV6")
 # CrudeV6.load()
@@ -164,7 +176,7 @@ class Model:
 # print(CrudeV7.predict(test))
 # print(CrudeV8.predict(test))
 
-# # * To create your own model (uncomment import data from Pickle first)
+# * -- To create your own model (uncomment import data from Pickle first) -- * #
 # CrudeCommunity = Model("CrudeCommunity")
 # CrudeCommunity.createNetwork()
 # CrudeCommunity.train(
