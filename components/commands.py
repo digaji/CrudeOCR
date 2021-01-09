@@ -92,16 +92,20 @@ def confirmAI(root):
     # Take a screenshot of the canvas and save it to the file path
     ImageGrab.grab((x, y, width, height)).save(finalPath)
 
-    # Get the prediction for the canvas
-    canvasImage = Image(finalPath, "Single Word")
-    prediction = canvasImage.getPrediction()[0]
+    try:
+        # Get the prediction for the canvas
+        canvasImage = Image(finalPath, "Single Word")
+        prediction = canvasImage.getPrediction()[0]
 
-    # Show prediction in messageBox and ask user if they want to draw again or not
-    messageBox = messagebox.askquestion(title="Prediction", message=f"This could be a: {prediction}\nDraw again?")
-    if messageBox == "yes":
+        # Show prediction in messageBox and ask user if they want to draw again or not
+        messageBox = messagebox.askquestion(title="Prediction", message=f"This could be a: {prediction}\nDraw again?")
+        if messageBox == "yes":
+            frames.testFrame(root)
+        else:
+            frames.mainFrame(root)
+    except:
+        messagebox.showerror(title="ERROR", message="No character was found!")
         frames.testFrame(root)
-    else:
-        frames.mainFrame(root)
 
 
 # * -- resultFrame -- * #
