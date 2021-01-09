@@ -19,9 +19,9 @@ class Image:
         self.__gray = cv.cvtColor(self.__image, cv.COLOR_BGR2GRAY)
 
         # Processing functions depending on the type of text that's being processed
-        if textOption == "multiLine":
+        if textOption == "Multiple Lines":
             self.multiLine(self.__gray)
-        elif textOption == "multiWord":
+        elif textOption == "Multiple Words":
             self.multiWord(self.__gray)
         else:
             self.singleWord(self.__gray)
@@ -87,7 +87,7 @@ class Image:
         # Grab image thresholds according to appropriate blockSize
         imagePreprocessed = cv.adaptiveThreshold(imagePreprocessed, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, blockSize=3, C=2)  # 3 to cover only each character
 
-        rect_kernel = cv.getStructuringElement(cv.MORPH_RECT, (3, 5))  # 3 to cover each character, 5 to get enough height in 2 part letters (e.g. i, j)
+        rect_kernel = cv.getStructuringElement(cv.MORPH_RECT, (1, 5))  # 1 to cover each character, 5 to get enough height in 2 part letters (e.g. i, j)
         # Erode and dilate the image to get a shape that covers a specific area (depends on rect_kernel size)
         imagePreprocessed = cv.morphologyEx(imagePreprocessed, cv.MORPH_CLOSE, rect_kernel)  
 
@@ -98,6 +98,7 @@ class Image:
         # Sorts contours into function for finding characters
         self.region = image
         self.characterFinder(contours)
+        self.__characters.append(" ")
 
     def singleFromMulti(self, image):
         """ For images that come from multiWord
@@ -146,7 +147,7 @@ class Image:
             # Convert the threshold image for model prediction
             final = final.astype("float32") / 255.0
             final = np.expand_dims(final, axis=-1)  # Adds 1 colour channel to the thresholded image (now it will be (28, 28, 1))
-            final = np.expand_dims(final, axis=0)  # Adds 1 dimension to the front of the tresholded image (now it will be (1, 28, 28, 1))
+            final = np.expand_dims(final, axis=0)  # Adds 1 dimension to the front of the thresholded image (now it will be (1, 28, 28, 1))
 
             # Predict the final image with loaded model and append the result to character list
             prediction = frames.model.predict(final)
