@@ -6,7 +6,7 @@ from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2
 import numpy as np
 from time import time, ctime
 
-# * -- Configuration for CUDA-enabled GPUs -- * #
+# * -- Configuration for CUDA-enabled GPUs (MAKE SURE TENSORFLOW GPU IS CONFIGURED FIRST) -- * #
 # physical_devices = tf.config.list_physical_devices("GPU")
 # tf.config.experimental.set_memory_growth(physical_devices[0], enable=True)
 
