@@ -98,7 +98,7 @@ def testFrame(root):
     commands.checkFrame()
 
     # Image
-    canvas = TestAI(frame, relx=0.5, rely=0.5, width=500, height=500, background="white", highlightthickness=5, highlightbackground="gray")
+    canvas = TestAI(frame, relx=0.5, rely=0.5, width=500, height=500, background="white")
 
     # Label
     tk.Label(frame, text="Draw Here!", font="Helvetica 70", bg="white").place(relx=0.5, rely=0.1, anchor="center")
