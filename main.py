@@ -11,6 +11,7 @@ def main():
     root = tk.Tk()
     root.title("Crude OCR")
     root.geometry(f"{WIDTH}x{HEIGHT}")
+    root.iconbitmap("COCR.ico")
     root.config(bg="white")
 
     frames.initialize(root)
