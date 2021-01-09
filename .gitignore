@@ -139,3 +139,6 @@ data/labelsTrain.pickle
 
 # Images folder
 images
+
+# AI Model logs
+models
