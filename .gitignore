@@ -136,3 +136,6 @@ data/imagesTest.pickle
 data/imagesTrain.pickle
 data/labelsTest.pickle
 data/labelsTrain.pickle
+
+# Images folder
+images
