@@ -45,17 +45,20 @@ class Image:
         # Erode and dilate the image to get a shape that covers a specific area (depends on rect_kernel size)
         imagePreprocessed = cv.morphologyEx(imagePreprocessed, cv.MORPH_CLOSE, rect_kernel)
 
-        # Finds contours of each line and sorts them from top to bottom
-        contours = cv.findContours(imagePreprocessed, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)[0]
-        contours = sort_contours(contours, method="top-to-bottom")[0]
+        try:
+            # Finds contours of each line and sorts them from top to bottom
+            contours = cv.findContours(imagePreprocessed, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)[0]
+            contours = sort_contours(contours, method="top-to-bottom")[0]
 
-        # Loops through contour of each line to find characters
-        for contour in contours:
-            copy = image.copy()
-            (x, y, width, height) = cv.boundingRect(contour)
-            self.region = copy[y: y + height, x: x + width]
-            self.multiWord(self.region)
-            self.__characters.append("\n")
+            # Loops through contour of each line to find characters
+            for contour in contours:
+                copy = image.copy()
+                (x, y, width, height) = cv.boundingRect(contour)
+                self.region = copy[y: y + height, x: x + width]
+                self.multiWord(self.region)
+                self.__characters.append("\n")
+        except:
+            pass
 
     def multiWord(self, image):
         """ For images with text that has multiple words, but only in one line
@@ -68,17 +71,20 @@ class Image:
         # Erode and dilate the image to get a shape that covers a specific area (depends on rect_kernel size)
         imagePreprocessed = cv.morphologyEx(imagePreprocessed, cv.MORPH_CLOSE, rect_kernel)
 
-        # Finds contours of each word and sorts them from left to right
-        contours = cv.findContours(imagePreprocessed, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)[0]
-        contours = sort_contours(contours, method="left-to-right")[0]
+        try:
+            # Finds contours of each word and sorts them from left to right
+            contours = cv.findContours(imagePreprocessed, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)[0]
+            contours = sort_contours(contours, method="left-to-right")[0]
 
-        # Loops through contour of each word to find characters
-        for contour in contours:
-            copy = image.copy()
-            (x, y, width, height) = cv.boundingRect(contour)
-            self.region = copy[y: y + height, x: x + width]
-            self.singleFromMulti(self.region)
-            self.__characters.append(" ")
+            # Loops through contour of each word to find characters
+            for contour in contours:
+                copy = image.copy()
+                (x, y, width, height) = cv.boundingRect(contour)
+                self.region = copy[y: y + height, x: x + width]
+                self.singleFromMulti(self.region)
+                self.__characters.append(" ")
+        except:
+            pass
 
     def singleWord(self, image):
         """ For images with text that has only one word
@@ -91,14 +97,17 @@ class Image:
         # Erode and dilate the image to get a shape that covers a specific area (depends on rect_kernel size)
         imagePreprocessed = cv.morphologyEx(imagePreprocessed, cv.MORPH_CLOSE, rect_kernel)  
 
-        # Finds contours of each character and sorts them from left to right
-        contours = cv.findContours(imagePreprocessed, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)[0]
-        contours = sort_contours(contours, method="left-to-right")[0]
+        try:
+            # Finds contours of each character and sorts them from left to right
+            contours = cv.findContours(imagePreprocessed, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)[0]
+            contours = sort_contours(contours, method="left-to-right")[0]
 
-        # Sorts contours into function for finding characters
-        self.region = image
-        self.characterFinder(contours)
-        self.__characters.append(" ")
+            # Sorts contours into function for finding characters
+            self.region = image
+            self.characterFinder(contours)
+            self.__characters.append(" ")
+        except:
+            pass
 
     def singleFromMulti(self, image):
         """ For images that come from multiWord
@@ -106,7 +115,7 @@ class Image:
         imagePreprocessed = self.preprocess(image)
         # Grab image thresholds according to appropriate blockSize
         imagePreprocessed = cv.adaptiveThreshold(imagePreprocessed, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, blockSize=3, C=2)  # 3 to cover only each character
-
+        
         # Finds contours of each character and sorts them from left to right
         contours = cv.findContours(imagePreprocessed, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)[0]
         contours = sort_contours(contours, method="left-to-right")[0]
