@@ -111,12 +111,15 @@ def confirmAI(root):
 # * -- resultFrame -- * #
 def speechResult(text):
     """speechButton function |
-    Reads text and plays its audio
+    Reads text and plays its audio. If there is no text, removes unused audio.mp3
     """
-    audio = gTTS(text=text, lang="en")
-    audio.save("audio.mp3")
-    playsound("audio.mp3")
-    remove("audio.mp3")
+    try:
+        audio = gTTS(text=text, lang="en")
+        audio.save("audio.mp3")
+        playsound("audio.mp3")
+        remove("audio.mp3")
+    except:
+        remove("audio.mp3")
 
 
 # * -- Misc. Functions -- * #
