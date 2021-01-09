@@ -29,16 +29,21 @@ class Camera(tk.Label):
 		self.rely = rely
 		self.camNumber = camNumber
 
-		# Start video capture
-		self.capture = cv.VideoCapture(camNumber)
+		# Check if there's a camera available, else return to mainFrame
+		try:
+			# Start video capture
+			self.capture = cv.VideoCapture(camNumber)
 
-		# Set video capture to designated resolution
-		self.capture.set(cv.CAP_PROP_FRAME_WIDTH, self.width)
-		self.capture.set(cv.CAP_PROP_FRAME_HEIGHT, self.height)
+			# Set video capture to designated resolution
+			self.capture.set(cv.CAP_PROP_FRAME_WIDTH, self.width)
+			self.capture.set(cv.CAP_PROP_FRAME_HEIGHT, self.height)
 
-		# Place the webcam in the desired location
-		self.place(relx=self.relx, rely=self.rely, anchor="center")
-		self.startCam()
+			# Place the webcam in the desired location
+			self.place(relx=self.relx, rely=self.rely, anchor="center")
+			self.startCam()
+		except:
+			frames.mainFrame(self.parent)
+			tk.messagebox.showerror(title="No Webcam", message="No Webcam detected on your machine!")
 
 	def setCamNumber(self, camNumber):
 		self.capture = cv.VideoCapture(camNumber)
