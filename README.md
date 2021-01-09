@@ -28,6 +28,8 @@ python main.py
 ```
 
 ## For model training / testing
+For NVIDIA GPU Owners, follow the instructions in this [link](https://www.tensorflow.org/install/gpu) for faster model processing
+
 The dataset used for the current model, and how it's set up, is in data/data.py
 
 Data is saved in .pickle format for quicker access during model training
