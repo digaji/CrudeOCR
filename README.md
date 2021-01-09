@@ -1,4 +1,3 @@
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](https://bitbucket.org/lbesson/ansi-colors)
 # Crude OCR - Final Project for PDM Semester 1
 Crude OCR is an OCR interpretation using Machine Learning as a base. It is able to interpret text from a written document in the form of a PNG or JPG file, as well as straight from the webcam. 
 
@@ -26,8 +25,14 @@ pip install -r requirements.txt
 ```
 python main.py
 ```
-
-## For model training / testing
+## Notice for Mac Users
+The playsound module currently doesn't work by itself. To get around this, do
+```
+pip install PyObjC
+``` 
+---
+The current way that the testFrame works to grab an image of the canvas is broken on Mac. There is currently no workaround for that problem hence, testFrame doesn't work on Mac.
+## For Model Training / Testing
 For NVIDIA GPU Owners, follow the instructions in this [link](https://www.tensorflow.org/install/gpu) for faster model processing
 
 The dataset used for the current model, and how it's set up, is in data/data.py
