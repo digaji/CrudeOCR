@@ -31,7 +31,7 @@ class Model:
 			tf.keras.callbacks.TerminateOnNaN(),
 		]
 
-	def cateNetwork(self):
+	def createNetwork(self):
 		self.model = keras.models.Sequential()
 
 		# 2 stacked Convolutional layers
