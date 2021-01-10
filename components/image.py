@@ -42,7 +42,7 @@ class Image:
 		imagePreprocessed = cv.adaptiveThreshold(imagePreprocessed, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, blockSize=11, C=2)  # 11 to cover each line
 
 		rect_kernel = cv.getStructuringElement(cv.MORPH_RECT, (100, 5))  # 100 to cover each line, 5 to get enough height in 2 part letters (e.g. i, j)
-		# Erode and dilate the image to get a shape that covers a specific area (depends on rect_kernel size)
+		# Dilate then erode the image to get a shape that covers a specific area (depends on rect_kernel size)
 		imagePreprocessed = cv.morphologyEx(imagePreprocessed, cv.MORPH_CLOSE, rect_kernel)
 
 		try:
@@ -68,7 +68,7 @@ class Image:
 		imagePreprocessed = cv.adaptiveThreshold(imagePreprocessed, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, blockSize=7, C=2)  # 7 to cover only each word
 
 		rect_kernel = cv.getStructuringElement(cv.MORPH_RECT, (30, 5))  # 30 to cover each word, 5 to get enough height in 2 part letters (e.g. i, j)
-		# Erode and dilate the image to get a shape that covers a specific area (depends on rect_kernel size)
+		# Dilate then erode the image to get a shape that covers a specific area (depends on rect_kernel size)
 		imagePreprocessed = cv.morphologyEx(imagePreprocessed, cv.MORPH_CLOSE, rect_kernel)
 
 		try:
@@ -94,7 +94,7 @@ class Image:
 		imagePreprocessed = cv.adaptiveThreshold(imagePreprocessed, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, blockSize=3, C=2)  # 3 to cover only each character
 
 		rect_kernel = cv.getStructuringElement(cv.MORPH_RECT, (1, 5))  # 1 to cover each character, 5 to get enough height in 2 part letters (e.g. i, j)
-		# Erode and dilate the image to get a shape that covers a specific area (depends on rect_kernel size)
+		# Dilate then erode the image to get a shape that covers a specific area (depends on rect_kernel size)
 		imagePreprocessed = cv.morphologyEx(imagePreprocessed, cv.MORPH_CLOSE, rect_kernel)  
 
 		try:
