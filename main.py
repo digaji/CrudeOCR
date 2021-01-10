@@ -7,18 +7,18 @@ HEIGHT = 800
 
 
 def main():
-    # Initialize main window
-    root = tk.Tk()
-    root.title("Crude OCR")
-    root.geometry(f"{WIDTH}x{HEIGHT}")
-    root.iconbitmap("COCR.ico")
-    root.config(bg="white")
+	# Initialize main window
+	root = tk.Tk()
+	root.title("Crude OCR")
+	root.geometry(f"{WIDTH}x{HEIGHT}")
+	root.iconbitmap("COCR.ico")
+	root.config(bg="white")
 
-    frames.initialize(root)
+	frames.initialize(root)
 
-    # Starts the window
-    root.mainloop()
+	# Starts the window
+	root.mainloop()
 
 
 if __name__ == "__main__":
-    main()
+	main()

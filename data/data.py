@@ -12,13 +12,13 @@ import pickle
 # * Run this file to reconstruct dataset into Pickle format
 
 dataTrain, dataTest = tfds.as_numpy(
-    tfds.load(  # as_numpy to get the dataset as numpy arrays
-        "emnist",
-        split=["train", "test"],
-        batch_size=-1,  # Loads the full dataset in a single batch
-        shuffle_files=True,
-        as_supervised=True,  # Returns a tuple instead of dictionary
-    )
+	tfds.load(  # as_numpy to get the dataset as numpy arrays
+		"emnist",
+		split=["train", "test"],
+		batch_size=-1,  # Loads the full dataset in a single batch
+		shuffle_files=True,
+		as_supervised=True,  # Returns a tuple instead of dictionary
+	)
 )
 
 # Split data into images and labels
@@ -35,10 +35,10 @@ imagesTest = raw_imagesTest.reshape(len(raw_imagesTest), shape)
 
 
 def rotate(image):
-    image = image.reshape([IMG_HEIGHT, IMG_WIDTH])  # Reshapes back to 28x28
-    image = np.fliplr(image)
-    image = np.rot90(image)
-    return image
+	image = image.reshape([IMG_HEIGHT, IMG_WIDTH])  # Reshapes back to 28x28
+	image = np.fliplr(image)
+	image = np.rot90(image)
+	return image
 
 
 # Rotate and reshape all images in the dataset
