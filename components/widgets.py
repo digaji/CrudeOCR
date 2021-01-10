@@ -117,26 +117,33 @@ def delFileButton(frame, root, x, y, width, height):
 
 # * -- testFrame -- * #
 class TestAI(tk.Canvas):
-    def __init__(self, parent, relx, rely, **kwargs):
-        super().__init__(parent, **kwargs)
-        self.relx = relx
-        self.rely = rely
+	def __init__(self, parent, relx, rely, **kwargs):
+		super().__init__(parent, **kwargs)
+		self.relx = relx
+		self.rely = rely
 
-        # Mouse bindings for painting
-        self.bind("<Button-1>", self.lastPos)
-        self.bind("<B1-Motion>", self.addLine)
+		# Mouse bindings for painting
+		self.bind("<Button-1>", self.lastPos)  # Mouse left click
+		self.bind("<B1-Motion>", self.addLine)
+		self.bind("<Button-3>", self.lastPos)  # Mouse right click
+		self.bind("<B3-Motion>", self.delLine)
 
-        # Place the canvas in the desired location
-        self.place(relx=self.relx, rely=self.rely, anchor="center")
+		# Place the canvas in the desired location
+		self.place(relx=self.relx, rely=self.rely, anchor="center")
 
-    def lastPos(self, event):
-        # Remembers the last position of the mouse click
-        self.lastX, self.lastY = event.x, event.y
-
-    def addLine(self, event):
-        # Creates lines for painting
-        self.create_line(self.lastX, self.lastY, event.x, event.y, fill="black", width=10)
-        self.lastPos(event)
+	def lastPos(self, event):
+		# Remembers the last position of the mouse click
+		self.lastX, self.lastY = event.x, event.y
+		
+	def addLine(self, event):
+		# Creates lines for painting
+		self.create_line(self.lastX, self.lastY, event.x, event.y, fill="black", width=10)
+		self.lastPos(event)
+	
+	def delLine(self, event):
+		# Deletes lines by painting in white
+		self.create_line(self.lastX, self.lastY, event.x, event.y, fill="white", width=30)
+		self.lastPos(event)
 
 
 def confirmAIButton(frame, root, x, y, width, height):
