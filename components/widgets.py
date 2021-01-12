@@ -168,13 +168,6 @@ def textBox(frame, x, y, width, height):
 	text = tk.Text(frame, width=width, height=height, font="Helvetica 20", highlightthickness=5)
 	text.place(relx=x, rely=y, anchor="center")
 
-	scrollbar = tk.Scrollbar(frame)
-	scrollbar.place(relx=x + 0.4, rely=y - 0.25, anchor="center")
-
-	# Bind textBox scroll vertical scroll to scrollbar
-	text.config(yscrollcommand=scrollbar.set)
-	scrollbar.config(command=text.yview)
-
 
 def speechButton(frame, text, x, y, width, height):
 	tk.Button(frame, text="Speech", bg="#a8cbff", 
