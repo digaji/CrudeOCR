@@ -13,33 +13,46 @@ def confirmWebcam(root):
 	Takes photo and stops the webcam. Appends the photo to imageList as an Image class object with chosen textOption.
 	Passes on to resultFrame
 	"""
-	frames.webcam.takePhoto()
-	frames.webcam.stopCam()
-	frames.webcam.destroy()
+	# Try to check if webcam exists or has been destoryed previously
+	try:
+		frames.webcam.takePhoto()
+		frames.webcam.stopCam()
+		frames.webcam.destroy()
 
-	webcamImage = frames.fileList[-1]
-	frames.imageList.append(Image(webcamImage, widgets.clicked.get()))
+		webcamImage = frames.fileList[-1]
+		frames.imageList.append(Image(webcamImage, widgets.clicked.get()))
 
-	frames.resultFrame(root)
+		frames.resultFrame(root)
+	except:
+		messagebox.showerror(title="No Webcam", message="No Webcam detected on your machine!\nNothing to process!")
 
 
 def switchCamNumber():
 	"""Temporary function for switching which webcam is open (currently used in switchWebcamButton) |
 	Switches video capture between webcam 0 and 1
 	"""
-	if frames.webcam.camNumber == 0:
-		frames.webcam.setCamNumber(1)
-	else:
-		frames.webcam.setCamNumber(0)
+	# Try to check if webcam exists or has been destroyed previously
+	try:
+		if frames.webcam.camNumber == 0:
+			frames.webcam.setCamNumber(1)
+		else:
+			frames.webcam.setCamNumber(0)
+	except:
+		pass
 
 
 def backWebcam(root):
 	"""backWebcamButton function |
 	Stops webcam frame and returns back to mainFrame
 	"""
-	frames.webcam.stopCam()
-	frames.webcam.destroy()
-	frames.mainFrame(root)
+	# Try to check if webcam exists or has been destroyed previously
+	try:
+		frames.webcam.stopCam()
+		frames.webcam.destroy()
+	except:
+		pass
+	else:
+		frames.mainFrame(root)
 
 
 # * -- fileFrame -- * #

@@ -43,14 +43,14 @@ def webcamFrame(root):
 	global webcam
 	commands.checkFrame()
 
-	# Webcam
-	webcam = Camera(root, relx=0.5, rely=0.4, camNumber=0, resolution=(640, 480))
-
 	# Widgets
 	widgets.confirmWebcamButton(frame, root, x=0.5, y=0.8, width=0.15, height=0.05)
 	widgets.backWebcamButton(frame, root, x=0.5, y=0.9, width=0.15, height=0.05)
 	widgets.switchWebcamButton(frame, x=0.2, y=0.8, width=0.15, height=0.05)
 	widgets.textMenu(frame, x=0.5, y=0.05, width=0.15, height=0.05)
+
+	# Webcam
+	webcam = Camera(root, relx=0.5, rely=0.4, camNumber=0, resolution=(640, 480))
 
 
 def fileFrame(root):

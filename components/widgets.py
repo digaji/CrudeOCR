@@ -29,7 +29,7 @@ class Camera(tk.Label):
 		self.rely = rely
 		self.camNumber = camNumber
 
-		# Check if there's a camera available, else return to mainFrame
+		# Check if there's a camera available, else it will stop and destroy itself
 		try:
 			# Start video capture
 			self.capture = cv.VideoCapture(camNumber)
@@ -42,8 +42,13 @@ class Camera(tk.Label):
 			self.place(relx=self.relx, rely=self.rely, anchor="center")
 			self.startCam()
 		except:
-			frames.mainFrame(self.parent)
 			tk.messagebox.showerror(title="No Webcam", message="No Webcam detected on your machine!")
+			try:
+				self.stopCam()
+			except:
+				pass
+			else:
+				self.destroy()
 
 	def setCamNumber(self, camNumber):
 		self.capture = cv.VideoCapture(camNumber)
@@ -59,7 +64,7 @@ class Camera(tk.Label):
 	def startCam(self):
 		global frameTk
 
-		# Starts webcam, else return to mainFrame
+		# Starts webcam, else it will stop and destroy itself
 		try:
 			# Take each frame from video capture and turn it into TkInter format
 			self.frame = self.capture.read()[1]
@@ -70,7 +75,13 @@ class Camera(tk.Label):
 			self.configure(image=frameTk)
 			self.after(ms=10, func=self.startCam)
 		except:
-			frames.mainFrame(self.parent)
+			tk.messagebox.showerror(title="No Webcam", message="No Webcam detected on your computer!")
+			try:
+				self.stopCam()
+			except:
+				pass
+			else:
+				self.destroy()
 
 	def stopCam(self):
 		self.capture.release()
