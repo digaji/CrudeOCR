@@ -23,7 +23,7 @@ python -m venv venv
 # For Windows
 venv/Scripts/activate
 # For Mac or Linux
-venv/bin/activate
+. venv/bin/activate
 ```
 
 4. Install the required libraries
