@@ -142,3 +142,6 @@ images
 
 # AI Model logs
 models
+
+# Mac finder files
+.DS_Store
